@@ -140,6 +140,7 @@ public class Memory {
         panelControl = new JPanel(new FlowLayout(FlowLayout.CENTER
                 , 50, 0));
         panelControl.setBorder(new BevelBorder(BevelBorder.RAISED));
+        // buttons for start, solve and about
         buttonNew = new JButton("New Game");
         enlargeFont(buttonNew, 2);
         panelControl.add(buttonNew);
