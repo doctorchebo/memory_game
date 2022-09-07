@@ -33,13 +33,14 @@ import java.util.Map;
 import javax.swing.ImageIcon;
 
 public class Images {
+
     private Map<Integer,Item> imageList;
-    public Images(){
+    public Images() throws IOException {
         imageList = new HashMap<>();
-        getImages();
+        getImages(14);
     }
     public String getResourceName(Integer intCod){
-        return imageList.get(intCod).name;
+        return imageList.get(intCod).url;
     }
     public ImageIcon IconFactory(Integer intCod){
       if(!imageList.containsKey(intCod)) {
@@ -52,7 +53,7 @@ public class Images {
                       .getResource(getResourceName(intCod)));
     }
 
-    private List<Item> getImagesRoutes(int numOfImages) throws IOException {
+    private List<Item> getImages(int numOfImages) throws IOException {
         List<Item> imageList = new ArrayList<>();
         List<String> images = getImageRoutes(new File("./images"));
         for(int i=0; i<=numOfImages; i++){

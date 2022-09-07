@@ -8,95 +8,74 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-public class Game implements ActionListener {
+public class Game {
 	private Board board;
-	int numOfClicks;
 	Integer intQtdOpened;
 	Integer intCombined;
 
-	ArrayList  listShuffle;
+	ArrayList shuffledList;
 
-	private Images imagens;
-	private buttonGame buttonLastClicked;
-	private List<buttonGame> listButtons;
+	private Images images;
+	private ImageCard buttonLastClicked;
+	private List<ImageCard> cardsList;
 
 	public Game(Board board){
 		this.board = board;
 	}
 
 	public void newGame(){
-		Collections.shuffle(listShuffle);
+		Collections.shuffle(shuffledList);
 		intQtdOpened = 0;
 		intCombined = 0;
 //		labelTitle.setText("Number of Clicks: 0");
 		buttonLastClicked = null;
 
-		for(int i = 0; i < listButtons.size();i++){
-			buttonGame button = listButtons.get(i);
-			button.iCod = (Integer) listShuffle.get(i);
-			button.setIcon(imagens.IconFactory(-1));
-			listButtons.set(i, button);
+		for(int i = 0; i < cardsList.size(); i++){
+			ImageCard button = cardsList.get(i);
+			button.iCod = (Integer) shuffledList.get(i);
+			button.setIcon(images.IconFactory(-1));
+			cardsList.set(i, button);
 		}
-		panelGrid.repaint();
+//		panelGrid.repaint();
 	}
 
-	public solve(){
+	public void solve(Boolean showClicks){
 		if(intQtdOpened == -1) return;
-		labelTitle.setText("Number of Clicks: " +
-				(bMostrarCliques? intQtdOpened.toString():"Auto Resolution"));
+//		labelTitle.setText("Number of Clicks: " +
+//				(showClicks? intQtdOpened.toString():"Auto Resolution"));
 
 		intQtdOpened = -1;
 		intCombined = 12;
 		buttonLastClicked = null;
 
-		for(int i = 0; i < listButtons.size();i++){
-			Memory.buttonGame button = listButtons.get(i);
-			button.setIcon(imagens.IconFactory((Integer) listShuffle.get(i)));
-			button.iCod = 0;
-			listButtons.set(i, button);
+		for(int i = 0; i < cardsList.size(); i++){
+			ImageCard card = cardsList.get(i);
+			card.setIcon(images.IconFactory((Integer) shuffledList.get(i)));
+			card.iCod = 0;
+			cardsList.set(i, card);
 		}
-		panelGrid.repaint();
+//		panelGrid.repaint();
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if(buttonItem.iCod == 0){
-			return;
-		}
-		// rule
-		// if there was a repeated click on the same button it is not worth...
-		if(buttonItem.equals(buttonLastClicked)) return;
+//	buttonNew.addActionListener(new ActionListener() {
+//		@Override
+//		public void actionPerformed(ActionEvent e) {
+//			newGame();
+//		}
+//	});
+//
+//        buttonSolve.addActionListener(new ActionListener() {
+//		@Override
+//		public void actionPerformed(ActionEvent e) {
+//			solve(false);
+//		}
+//	});
+//
+//        buttonAbout.addActionListener(new ActionListener() {
+//		@Override
+//		public void actionPerformed(ActionEvent e) {
+//			JOptionPane.showMessageDialog(frame,"Just For Fun");
+//		}
+//	});
 
-		labelTitle.setText("Number of Clicks: " + ++intQtdOpened);
-
-		buttonItem.setIcon(imagens.IconFactory(buttonItem.iCod));
-
-		if(buttonLastClicked == null){
-			buttonLastClicked = buttonItem;
-			return;
-		}
-
-
-
-
-		if(Objects.equals(buttonItem.iCod, buttonLastClicked.iCod)){
-
-			buttonItem.setIcon(imagens.IconFactory(0));
-			buttonItem.iCod = 0;
-
-			buttonLastClicked.setIcon(imagens.IconFactory(0));
-			buttonLastClicked.iCod = 0;
-
-			buttonLastClicked = null;
-			intCombined++;
-			if(intCombined >= 12){
-				Solve(true);
-			}
-
-		}else{
-			buttonLastClicked.setIcon(imagens.IconFactory(-1));
-			buttonLastClicked = buttonItem;
-		}
-	}
-	
 }
