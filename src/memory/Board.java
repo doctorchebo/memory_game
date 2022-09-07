@@ -11,6 +11,11 @@ import java.util.Objects;
 
 public class Board {
     private JFrame frame;
+    private JButton buttonNew, buttonSolve, buttonAbout;
+
+    private buttonGame buttonLastClicked;
+
+
     private JPanel panelTitle, panelGrid, panelControl;
     private JButton buttonNew, buttonSolve, buttonAbout;
 
@@ -25,6 +30,26 @@ public class Board {
     Integer iCod;
 
     public Board (){
+        buttonNew.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                newGame();
+            }
+        });
+
+        buttonSolve.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                solve(false);
+            }
+        });
+
+        buttonAbout.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(frame,"Just For Fun");
+            }
+        });
         createLayout();
     }
     public void createLayout(){
@@ -152,6 +177,7 @@ public class Board {
         frame.setMinimumSize(frame.getPreferredSize());
         frame.setVisible(true);
     }
+
 
     private void enlargeFont(java.awt.Component c, float factor) {
         c.setFont(c.getFont().deriveFont(c.getFont().getSize() * factor));

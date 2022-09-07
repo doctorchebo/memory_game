@@ -1,29 +1,38 @@
 package memory;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 public class Game implements ActionListener {
+	private Board board;
 	int numOfClicks;
 	Integer intQtdOpened;
 	Integer intCombined;
 
-	public Game(){
-		
+	ArrayList  listShuffle;
+
+	private Images imagens;
+	private buttonGame buttonLastClicked;
+	private List<buttonGame> listButtons;
+
+	public Game(Board board){
+		this.board = board;
 	}
 
 	public void newGame(){
 		Collections.shuffle(listShuffle);
 		intQtdOpened = 0;
 		intCombined = 0;
-		labelTitle.setText("Number of Clicks: 0");
+//		labelTitle.setText("Number of Clicks: 0");
 		buttonLastClicked = null;
 
 		for(int i = 0; i < listButtons.size();i++){
-			Memory.buttonGame button = listButtons.get(i);
+			buttonGame button = listButtons.get(i);
 			button.iCod = (Integer) listShuffle.get(i);
 			button.setIcon(imagens.IconFactory(-1));
 			listButtons.set(i, button);

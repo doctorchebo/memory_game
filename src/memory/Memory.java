@@ -86,10 +86,10 @@ public class Memory {
         Collections.shuffle(listShuffle);
     }
     
-    private void Solve(Boolean bMostrarCliques){
+    private void solve(Boolean showClicks){
         if(intQtdOpened == -1) return;
         labelTitle.setText("Number of Clicks: " + 
-                (bMostrarCliques? intQtdOpened.toString():"Auto Resolution"));
+                (showClicks? intQtdOpened.toString():"Auto Resolution"));
 
         intQtdOpened = -1;
         intCombined = 12;
@@ -103,7 +103,7 @@ public class Memory {
         }
         panelGrid.repaint();
     }
-    private void NewGame(){
+    private void newGame(){
         Collections.shuffle(listShuffle);
         intQtdOpened = 0;
         intCombined = 0;
@@ -120,13 +120,11 @@ public class Memory {
         
         
     }
-    public void ShowWindow(){
+    public void showWindow(){
         frame = new JFrame("Memory");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
-        
-        
-        
+
         // Title
         labelTitle = new JLabel("Number of Clicks: 0");
         enlargeFont(labelTitle, 2);
@@ -156,14 +154,14 @@ public class Memory {
         buttonNew.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                NewGame();
+                newGame();
             }
         });
 
         buttonSolve.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Solve(false);
+                solve(false);
             }
         });
 
@@ -221,9 +219,6 @@ public class Memory {
                             return;
                         }
 
-                        
-                        
-                        
                         if(Objects.equals(buttonItem.iCod, buttonLastClicked.iCod)){
 
                             buttonItem.setIcon(imagens.IconFactory(0));
@@ -235,7 +230,7 @@ public class Memory {
                             buttonLastClicked = null;
                             intCombined++;
                             if(intCombined >= 12){
-                                Solve(true);
+                                solve(true);
                             }
                                 
                         }else{
@@ -253,8 +248,6 @@ public class Memory {
         frame.setMinimumSize(frame.getPreferredSize());
         frame.setVisible(true);
 
-
-
     }
     /**
      * @param args the command line arguments
@@ -266,7 +259,7 @@ public class Memory {
             @Override
             public void run() {
                 Memory mem = new Memory();
-                mem.ShowWindow();
+                mem.showWindow();
                 
             }
         });
