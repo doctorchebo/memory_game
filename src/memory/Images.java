@@ -24,26 +24,32 @@
 
 package memory;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import javax.swing.ImageIcon;
 
-public class Images {
 
-    private Map<Integer,Item> imageList;
-    public Images() throws IOException {
-        imageList = new HashMap<>();
-        getImages(14);
+
+public class Images {
+    private class Item{
+        Integer intCod;
+        String strNomeRecurso;
+        Item(Integer intCod, String strNomeRecurso){
+            this.intCod = intCod;
+            this.strNomeRecurso = strNomeRecurso;
+        }
     }
+    private final Map<Integer,Item> mapa;
+    public Images(){
+        mapa = new HashMap<>();
+        preenche();
+    }
+
     public String getResourceName(Integer intCod){
-        return imageList.get(intCod).url;
+        return mapa.get(intCod).strNomeRecurso;
     }
     public ImageIcon IconFactory(Integer intCod){
-      if(!imageList.containsKey(intCod)) {
+      if(!mapa.containsKey(intCod)) {
           System.out.println("IconFactory problem");
           return null;
       }
@@ -52,27 +58,54 @@ public class Images {
                       .getClassLoader()
                       .getResource(getResourceName(intCod)));
     }
+    private void preenche(){
+        Item item;
+        int i = -1;
 
-    private List<Item> getImages(int numOfImages) throws IOException {
-        List<Item> imageList = new ArrayList<>();
-        List<String> images = getImageRoutes(new File("./images"));
-        for(int i=0; i<=numOfImages; i++){
-            imageList.add(new Item(i, images.get(i)));
-        }
-        return imageList;
-    }
-    public List<String> getImageRoutes(File directory) throws IOException {
-        List<String> resultList = new ArrayList<>();
-        File[] f = directory.listFiles();
-        for (File file : f) {
-            if (file != null && file.getName().startsWith("ic_") && file.getName().toLowerCase().endsWith(".png")) {
-                resultList.add(file.getCanonicalPath());
-            }
-        }
-        if (resultList.size() > 0)
-            return resultList;
-        else
-            return null;
+        // undiscovered image
+        item = new Item(i++,"images/ic_help_outline_black_18dp.png");
+        mapa.put(item.intCod, item);        
+
+        // discovered image
+        item = new Item(i++,"images/ic_done_black_18dp.png");
+        mapa.put(item.intCod, item);        
+
+
+        item = new Item(i++,"images/ic_airport_shuttle_black_18dp.png");
+        mapa.put(item.intCod, item);        
+
+        item = new Item(i++,"images/ic_all_inclusive_black_18dp.png");
+        mapa.put(item.intCod, item);        
+
+        item = new Item(i++,"images/ic_beach_access_black_18dp.png");
+        mapa.put(item.intCod, item);        
+
+        item = new Item(i++,"images/ic_business_center_black_18dp.png");
+        mapa.put(item.intCod, item);        
+
+        item = new Item(i++,"images/ic_casino_black_18dp.png");
+        mapa.put(item.intCod, item);        
+
+        item = new Item(i++,"images/ic_child_care_black_18dp.png");
+        mapa.put(item.intCod, item);        
+
+        item = new Item(i++,"images/ic_child_friendly_black_18dp.png");
+        mapa.put(item.intCod, item);        
+
+        item = new Item(i++,"images/ic_fitness_center_black_18dp.png");
+        mapa.put(item.intCod, item);        
+
+        item = new Item(i++,"images/ic_free_breakfast_black_18dp.png");
+        mapa.put(item.intCod, item);        
+
+        item = new Item(i++,"images/ic_hot_tub_black_18dp.png");
+        mapa.put(item.intCod, item);        
+
+        item = new Item(i++,"images/ic_kitchen_black_18dp.png");
+        mapa.put(item.intCod, item);        
+
+        item = new Item(i++,"images/ic_pool_black_18dp.png");
+        mapa.put(item.intCod, item);        
     }
     
 }
