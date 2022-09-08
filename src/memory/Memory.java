@@ -39,52 +39,40 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
-
-/**
- *
- * @author marco
- */
 public class Memory {
     private JFrame frame;
     private JPanel panelTitle, panelGrid, panelControl;
     private JButton buttonNew, buttonSolve, buttonAbout;
-
-    private buttonGame buttonLastClicked;
-    private final Images imagens;
-    
+    private ButtonGame buttonLastClicked;
+    private Images images;
+    private Board board;
     private JLabel labelTitle;
-    
+
     Integer intQtdOpened;
     Integer intCombined;
-    ArrayList  listShuffle;
+    ArrayList shuffledList;
+    private List<ButtonGame> listButtons;
 
-    
-    private List<buttonGame> listButtons;
-    
-    private class buttonGame extends JButton{
-        Integer iCod;
-        public buttonGame(Integer iCod){
-            this.iCod = iCod;
-        }
+
+    public Memory(){
+        new Images();
+        new Board(new UIFactory(), new FontEnlarger());
+
+        getShuffledList();
     }
-    
-    private void enlargeFont(java.awt.Component c, float factor) {
-        c.setFont(c.getFont().deriveFont(c.getFont().getSize() * factor));
-    }
-    
-    public Memory(){ 
-        imagens = new Images();
+
+    private void getShuffledList(){
         intQtdOpened = 0;
         intCombined = 0;
-
-        listShuffle = new ArrayList<>();
+        shuffledList = new ArrayList<>();
 
         for (int i = 1; i <= 12; i++) {
-            listShuffle.add(i);
-            listShuffle.add(i);
+            shuffledList.add(i);
+            shuffledList.add(i);
         }
-        Collections.shuffle(listShuffle);
+        Collections.shuffle(shuffledList);
     }
+<<<<<<< HEAD
     
     private void Solve(Boolean bMostrarCliques){
         if(intQtdOpened == -1) return;
@@ -258,20 +246,21 @@ public class Memory {
     /**
      * @param args the command line arguments
      */
+=======
+
+>>>>>>> e5af5bd (using dependency injection and UIElement Factory to decouple game)
     public static void main(String[] args) {
-        //Schedule a job for the event-dispatching thread:
-        //creating and showing this application's GUI.
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
                 Memory mem = new Memory();
+<<<<<<< HEAD
                 mem.ShowWindow();
                 
+=======
+>>>>>>> e5af5bd (using dependency injection and UIElement Factory to decouple game)
             }
         });
-
-        
-        
     }
     
 }

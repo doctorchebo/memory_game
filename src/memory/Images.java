@@ -31,6 +31,7 @@ import javax.swing.ImageIcon;
 
 
 public class Images {
+<<<<<<< HEAD
     private class Item{
         Integer intCod;
         String strNomeRecurso;
@@ -50,20 +51,37 @@ public class Images {
     }
     public ImageIcon IconFactory(Integer intCod){
       if(!mapa.containsKey(intCod)) {
+=======
+    private final Map<Integer,Item> imagesMap;
+    public Images(){
+        imagesMap = new HashMap<>();
+        getImages();
+    }
+    public String getResourceName(Integer id){
+        return imagesMap.get(id).name;
+    }
+    public ImageIcon IconFactory(Integer id){
+      if(!imagesMap.containsKey(id)) {
+>>>>>>> e5af5bd (using dependency injection and UIElement Factory to decouple game)
           System.out.println("IconFactory problem");
           return null;
       }
       return new ImageIcon(
               getClass()
                       .getClassLoader()
-                      .getResource(getResourceName(intCod)));
+                      .getResource(getResourceName(id)));
     }
+<<<<<<< HEAD
     private void preenche(){
+=======
+    private void getImages(){
+>>>>>>> e5af5bd (using dependency injection and UIElement Factory to decouple game)
         Item item;
         int i = -1;
 
         // undiscovered image
         item = new Item(i++,"images/ic_help_outline_black_18dp.png");
+<<<<<<< HEAD
         mapa.put(item.intCod, item);        
 
         // discovered image
@@ -106,6 +124,50 @@ public class Images {
 
         item = new Item(i++,"images/ic_pool_black_18dp.png");
         mapa.put(item.intCod, item);        
+=======
+        imagesMap.put(item.id, item);
+
+        // discovered image
+        item = new Item(i++,"images/ic_done_black_18dp.png");
+        imagesMap.put(item.id, item);
+
+
+        item = new Item(i++,"images/ic_airport_shuttle_black_18dp.png");
+        imagesMap.put(item.id, item);
+
+        item = new Item(i++,"images/ic_all_inclusive_black_18dp.png");
+        imagesMap.put(item.id, item);
+
+        item = new Item(i++,"images/ic_beach_access_black_18dp.png");
+        imagesMap.put(item.id, item);
+
+        item = new Item(i++,"images/ic_business_center_black_18dp.png");
+        imagesMap.put(item.id, item);
+
+        item = new Item(i++,"images/ic_casino_black_18dp.png");
+        imagesMap.put(item.id, item);
+
+        item = new Item(i++,"images/ic_child_care_black_18dp.png");
+        imagesMap.put(item.id, item);
+
+        item = new Item(i++,"images/ic_child_friendly_black_18dp.png");
+        imagesMap.put(item.id, item);
+
+        item = new Item(i++,"images/ic_fitness_center_black_18dp.png");
+        imagesMap.put(item.id, item);
+
+        item = new Item(i++,"images/ic_free_breakfast_black_18dp.png");
+        imagesMap.put(item.id, item);
+
+        item = new Item(i++,"images/ic_hot_tub_black_18dp.png");
+        imagesMap.put(item.id, item);
+
+        item = new Item(i++,"images/ic_kitchen_black_18dp.png");
+        imagesMap.put(item.id, item);
+
+        item = new Item(i++,"images/ic_pool_black_18dp.png");
+        imagesMap.put(item.id, item);
+>>>>>>> e5af5bd (using dependency injection and UIElement Factory to decouple game)
     }
     
 }
