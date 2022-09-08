@@ -1,25 +1,19 @@
 package memory;
 
-import javax.swing.*;
-import java.awt.*;
-
-import static memory.FlowType.CENTER;
-import static memory.FlowType.LEADING;
-
 public class UIFactory  {
-    UIElement getUIElement(UIType type, String content){
+    UIElement getUIElement(UIType type){
         switch (type){
             case BUTTON:
-                return new Button(content);
+                return new Button();
             case FRAME:
-                return new Frame(content);
+                return new Frame();
             case LABEL:
-                return new Label(content);
+                return new Label();
             default: return null;
         }
     }
-    UIElement getPanelFlowElement(FlowType flowType){
-        return new PanelFlow(flowType);
+    UIElement getPanelFlowElement(){
+        return new PanelFlow();
     }
     UIElement getPanelGridElement(){
         return new PanelGrid();

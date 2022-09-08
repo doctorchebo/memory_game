@@ -40,26 +40,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
 public class Memory {
-    private JFrame frame;
-    private JPanel panelTitle, panelGrid, panelControl;
-    private JButton buttonNew, buttonSolve, buttonAbout;
-    private ButtonGame buttonLastClicked;
-    private Images images;
-    private Board board;
-    private JLabel labelTitle;
-
-    Integer intQtdOpened;
-    Integer intCombined;
-    ArrayList shuffledList;
-    private List<ButtonGame> listButtons;
-
-
-    public Memory(){
-        new Images();
-        new Board(new UIFactory(), new FontEnlarger());
-
-        getShuffledList();
+    public Memory(Board board) {
     }
+<<<<<<< HEAD
 
     private void getShuffledList(){
         intQtdOpened = 0;
@@ -249,16 +232,27 @@ public class Memory {
 =======
 
 >>>>>>> e5af5bd (using dependency injection and UIElement Factory to decouple game)
+=======
+>>>>>>> b0f7769 (refactoring images class and including constants)
     public static void main(String[] args) {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
+<<<<<<< HEAD
                 Memory mem = new Memory();
 <<<<<<< HEAD
                 mem.ShowWindow();
                 
 =======
 >>>>>>> e5af5bd (using dependency injection and UIElement Factory to decouple game)
+=======
+                Memory mem = new Memory(
+                        new Board(
+                        new UIFactory(),
+                        new FontEnlarger(),
+                        new Images(),
+                        new UIHelpers()));
+>>>>>>> b0f7769 (refactoring images class and including constants)
             }
         });
     }

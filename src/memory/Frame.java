@@ -1,11 +1,15 @@
 package memory;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class Frame implements UIElement{
-    public Frame(String content){
-        new JFrame(content);
+
+    @Override
+    public Component getElement(String content) {
+        return new JFrame(content);
     }
+
     @Override
     public String getType() {
         return "frame";

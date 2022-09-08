@@ -24,13 +24,16 @@
 
 package memory;
 
+import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import javax.swing.ImageIcon;
 
-
-
 public class Images {
+<<<<<<< HEAD
 <<<<<<< HEAD
     private class Item{
         Integer intCod;
@@ -52,29 +55,44 @@ public class Images {
     public ImageIcon IconFactory(Integer intCod){
       if(!mapa.containsKey(intCod)) {
 =======
+=======
+
+    String localDir = System.getProperty("user.dir");
+    private GameConstants gameConstants;
+>>>>>>> b0f7769 (refactoring images class and including constants)
     private final Map<Integer,Item> imagesMap;
     public Images(){
         imagesMap = new HashMap<>();
         getImages();
     }
-    public String getResourceName(Integer id){
-        return imagesMap.get(id).name;
+    public String getItemName(Integer id){
+        return "images/" + imagesMap.get(id).name;
     }
+<<<<<<< HEAD
     public ImageIcon IconFactory(Integer id){
       if(!imagesMap.containsKey(id)) {
 >>>>>>> e5af5bd (using dependency injection and UIElement Factory to decouple game)
           System.out.println("IconFactory problem");
+=======
+
+    public ImageIcon createIcon(Integer id){
+      if(imagesMap.containsKey(id)) {
+          return new ImageIcon(
+                  getClass()
+                          .getClassLoader()
+                          .getResource(getItemName(id)));
+
+      } else {
+          System.out.println("Icon could not be created");
+>>>>>>> b0f7769 (refactoring images class and including constants)
           return null;
       }
-      return new ImageIcon(
-              getClass()
-                      .getClassLoader()
-                      .getResource(getResourceName(id)));
     }
 <<<<<<< HEAD
     private void preenche(){
 =======
     private void getImages(){
+<<<<<<< HEAD
 >>>>>>> e5af5bd (using dependency injection and UIElement Factory to decouple game)
         Item item;
         int i = -1;
@@ -168,6 +186,37 @@ public class Images {
         item = new Item(i++,"images/ic_pool_black_18dp.png");
         imagesMap.put(item.id, item);
 >>>>>>> e5af5bd (using dependency injection and UIElement Factory to decouple game)
+=======
+        File f = new File(localDir + "/src/images");
+        String[] imageList = f.list();
+        for(Integer i=0; i<imageList.length-1; i++){
+            Item item = new Item(i, imageList[i]);
+            imagesMap.put(i, item);
+        }
     }
-    
+    public ImageIcon getIcon(IconType iconType){
+        switch (iconType){
+            case SUCCESS:
+                File s = new File(localDir + gameConstants.URL_SUCCESS_ICON);
+                String[] successIcon = s.list();
+                return new ImageIcon(getClass()
+                        .getClassLoader()
+                        .getResource("images/done/" + successIcon[0]));
+            case UNKNOWN:
+                File u = new File(localDir + gameConstants.URL_UNKNOWN_ICON);
+                String[] unknownIcon = u.list();
+                return new ImageIcon(getClass()
+                        .getClassLoader()
+                        .getResource("images/unknown/" + unknownIcon[0]));
+            default: return null;
+        }
+    }
+    public Integer getImageIdByValue(String value){
+        List<Integer> key = imagesMap.entrySet().stream()
+                .filter(item -> item.getValue().name.contains(value))
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
+        return key.get(0);
+>>>>>>> b0f7769 (refactoring images class and including constants)
+    }
 }

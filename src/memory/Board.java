@@ -10,187 +10,95 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-public class Board {
-    private JFrame frame;
-    private JPanel panelTitle, panelGrid, panelControl;
-    private JButton buttonNew, buttonSolve, buttonAbout;
-    private ButtonGame buttonLastClicked;
-    private Images images;
-    private UIFactory uiFactory;
-    private JLabel labelTitle;
+public class Board implements GameService{
+    GameConstants gameConstants;
 
-    private FontEnlarger fontEnlarger;
-
-    private List<ButtonGame> listButtons;
-
-    Integer intQtdOpened;
-    Integer intCombined;
+    JFrame frame;
+    JPanel panelTitle, panelGrid, panelControl;
+    JButton new_game, solve, about;
+    ButtonGame buttonLastClicked;
+    Images images;
+    UIFactory uiFactory;
+    FontEnlarger fontEnlarger;
+    List<ButtonGame> listButtons;
+    UIHelpers uiHelpers;
+    JLabel labelTitle;
+    Integer numberOfClicks;
+    Integer pairsFound;
     ArrayList shuffledList;
 
-    public Board(UIFactory uiFactory, FontEnlarger fontEnlarger){
+
+    public Board(UIFactory uiFactory,
+                 FontEnlarger fontEnlarger,
+                 Images images,
+                 UIHelpers uiHelpers){
+        this.images = images;
         this.uiFactory = uiFactory;
         this.fontEnlarger = fontEnlarger;
-
+        this.uiHelpers = uiHelpers;
+        shuffle();
         createLayout();
         addActionListeners();
     }
 
-    private void solve(Boolean showNumOfClicks){
-        if(intQtdOpened == -1) return;
-        labelTitle.setText("Number of Clicks: " +
-                (showNumOfClicks? intQtdOpened.toString():"Auto Resolution"));
+    public void addButtonActionListeners(ButtonGame buttonItem) {
+        buttonItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(buttonItem.id == 0){
+                    return;
+                }
+                // rule
+                // if there was a repeated click on the same button it is not worth...
+                if(buttonItem.equals(buttonLastClicked)) return;
 
-        intQtdOpened = -1;
-        intCombined = 12;
-        buttonLastClicked = null;
+                labelTitle.setText("Number of Clicks: " + ++numberOfClicks);
 
-        for(int i = 0; i < listButtons.size();i++){
-            ButtonGame button = listButtons.get(i);
-            button.setIcon(images.IconFactory((Integer) shuffledList.get(i)));
-            button.iCod = 0;
-            listButtons.set(i, button);
-        }
-        panelGrid.repaint();
-    }
-    private void newGame(){
-        getShuffledList();
-        labelTitle.setText("Number of Clicks: 0");
-        buttonLastClicked = null;
+                buttonItem.setIcon(images.createIcon(buttonItem.id));
 
-        for(int i = 0; i < listButtons.size();i++){
-            ButtonGame button = listButtons.get(i);
-            button.iCod = (Integer) shuffledList.get(i);
-            button.setIcon(images.IconFactory(-1));
-            listButtons.set(i, button);
-        }
-        panelGrid.repaint();
-    }
-    private void createLayout(){
-        JFrame frame = (JFrame) uiFactory.getUIElement(UIType.FRAME, "Memory");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLayout(new BorderLayout());
+                if(buttonLastClicked == null){
+                    buttonLastClicked = buttonItem;
+                    return;
+                }
 
-        Component label = (Component) uiFactory.getUIElement(UIType.LABEL, "Number of Clicks: 0");
-        fontEnlarger.enlargeFont(label, 2);
+                if(Objects.equals(buttonItem.id, buttonLastClicked.id)){
 
-        //needs to implement hgap 50, vgap 0;
-        JPanel panelControl = (JPanel) uiFactory.getPanelFlowElement(FlowType.CENTER);
-        panelControl.setBorder(new BevelBorder(BevelBorder.RAISED));
+                    buttonItem.setIcon(images.getIcon(IconType.SUCCESS));
+                    buttonItem.id = 0;
 
-        JButton new_game = (JButton) uiFactory.getUIElement(UIType.BUTTON, "New Game");
-        fontEnlarger.enlargeFont(new_game, 2);
+                    buttonLastClicked.setIcon(images.getIcon(IconType.SUCCESS));
+                    buttonLastClicked.id = 0;
 
-        JButton solve = (JButton) uiFactory.getUIElement(UIType.BUTTON, "Solve");
-        fontEnlarger.enlargeFont(solve, 2);
-
-        JButton about = (JButton) uiFactory.getUIElement(UIType.BUTTON, "About");
-        fontEnlarger.enlargeFont(about, 2);
-
-        panelControl.add(new_game);
-        panelControl.add(solve);
-        panelControl.add(about);
-
-        JPanel panelTitle = (JPanel) uiFactory.getPanelFlowElement(FlowType.LEADING);
-        panelTitle.setBorder(new BevelBorder(BevelBorder.RAISED));
-        panelTitle.add(labelTitle);
-        frame.add(panelTitle,BorderLayout.NORTH);
-
-        // grid principal
-        JPanel panelGrid = (JPanel) uiFactory.getPanelGridElement();
-        panelGrid.setBorder(new BevelBorder(BevelBorder.RAISED));
-
-        // 6 x 4 = 24
-        // 24 have two possibilities of 12
-        listButtons = new ArrayList<>();
-        buttonLastClicked = null;
-        int x = 0;
-        for(int i = 0; i < 6; i++){
-            for(int j = 0; j < 4; j++){
-                Integer intNumSorteado = (Integer) shuffledList.get(x);
-                Memory.buttonGame buttonItem = new Memory.buttonGame(intNumSorteado);
-
-                buttonItem.setIcon(images.IconFactory(-1));
-                x++;
-
-
-                GridBagConstraints c = new GridBagConstraints();
-                c.fill = GridBagConstraints.BOTH;
-                c.weightx = .5;
-                c.weighty = .5;
-                c.gridx = i;
-                c.gridy = j;
-                panelGrid.add(buttonItem, c);
-
-                // list of buttons used in the Game
-                listButtons.add(buttonItem);
-
-                buttonItem.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        if(buttonItem.iCod == 0){
-                            return;
-                        }
-                        // rule
-                        // if there was a repeated click on the same button it is not worth...
-                        if(buttonItem.equals(buttonLastClicked)) return;
-
-                        labelTitle.setText("Number of Clicks: " + ++intQtdOpened);
-
-                        buttonItem.setIcon(images.IconFactory(buttonItem.iCod));
-
-                        if(buttonLastClicked == null){
-                            buttonLastClicked = buttonItem;
-                            return;
-                        }
-
-                        if(Objects.equals(buttonItem.iCod, buttonLastClicked.iCod)){
-
-                            buttonItem.setIcon(images.IconFactory(0));
-                            buttonItem.iCod = 0;
-
-                            buttonLastClicked.setIcon(images.IconFactory(0));
-                            buttonLastClicked.iCod = 0;
-
-                            buttonLastClicked = null;
-                            intCombined++;
-                            if(intCombined >= 12){
-                                solve(true);
-                            }
-
-                        }else{
-                            buttonLastClicked.setIcon(images.IconFactory(-1));
-                            buttonLastClicked = buttonItem;
-                        }
+                    buttonLastClicked = null;
+                    pairsFound++;
+                    if(pairsFound >= gameConstants.NUMBER_OF_PAIRS){
+                        solve(true);
                     }
-                });
+
+                }else{
+                    buttonLastClicked.setIcon(images.getIcon(IconType.UNKNOWN));
+                    buttonLastClicked = buttonItem;
+                }
             }
-        }
-        frame.add(panelGrid,BorderLayout.CENTER);
-
-
-        frame.pack();
-        frame.setMinimumSize(frame.getPreferredSize());
-        frame.setVisible(true);
-
-
+        });
     }
 
-    private void addActionListeners(){
-        buttonNew.addActionListener(new ActionListener() {
+    public void addActionListeners(){
+        new_game.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 newGame();
             }
         });
 
-        buttonSolve.addActionListener(new ActionListener() {
+        solve.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 solve(false);
             }
         });
 
-        buttonAbout.addActionListener(new ActionListener() {
+        about.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JOptionPane.showMessageDialog(frame,"Just For Fun");
@@ -198,5 +106,105 @@ public class Board {
         });
     }
 
+    private void createLayout(){
+        frame = (JFrame) uiFactory.getUIElement(UIType.FRAME).getElement("Memory");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(new BorderLayout());
 
+        labelTitle = (JLabel) uiFactory.getUIElement(UIType.LABEL).getElement("Number of Clicks: 0");
+        fontEnlarger.enlargeFont(labelTitle, 2);
+
+        panelControl = (JPanel) uiFactory.getPanelFlowElement().getElement("CENTER");
+        panelControl.setBorder(new BevelBorder(BevelBorder.RAISED));
+
+        new_game = (JButton) uiFactory.getUIElement(UIType.BUTTON).getElement("New Game");
+        fontEnlarger.enlargeFont(new_game, 2);
+
+        solve = (JButton) uiFactory.getUIElement(UIType.BUTTON).getElement("Solve");
+        fontEnlarger.enlargeFont(solve, 2);
+
+        about = (JButton) uiFactory.getUIElement(UIType.BUTTON).getElement("About");
+        fontEnlarger.enlargeFont(about, 2);
+        frame.add(panelControl,BorderLayout.SOUTH);
+
+        panelControl.add(new_game);
+        panelControl.add(solve);
+        panelControl.add(about);
+
+        panelTitle = (JPanel) uiFactory.getPanelFlowElement().getElement("LEADING");
+        panelTitle.setBorder(new BevelBorder(BevelBorder.RAISED));
+        panelTitle.add(labelTitle);
+        frame.add(panelTitle,BorderLayout.NORTH);
+
+        // grid principal
+        panelGrid = (JPanel) uiFactory.getPanelGridElement().getElement("GRID");
+        panelGrid.setBorder(new BevelBorder(BevelBorder.RAISED));
+
+        listButtons = new ArrayList<>();
+        buttonLastClicked = null;
+        int x = 0;
+        System.out.println(shuffledList);
+        for(int i = 0; i < gameConstants.NUMBER_OF_COLUMNS; i++){
+            for(int j = 0; j < gameConstants.NUMBER_OF_ROWS; j++){
+                Integer randomNum = (Integer) shuffledList.get(x);
+                x++;
+                ButtonGame buttonItem = new ButtonGame(randomNum);
+                buttonItem.setIcon(images.getIcon(IconType.UNKNOWN));
+
+                panelGrid.add(buttonItem, uiHelpers.generateConstraints(i , j));
+
+                // list of buttons used in the Game
+                listButtons.add(buttonItem);
+                addButtonActionListeners(buttonItem);
+            }
+        }
+        frame.add(panelGrid,BorderLayout.CENTER);
+        frame.pack();
+        frame.setMinimumSize(frame.getPreferredSize());
+        frame.setVisible(true);
+    }
+
+    public void newGame(){
+        shuffle();
+        labelTitle.setText("Number of Clicks: 0");
+        buttonLastClicked = null;
+
+        for(int i = 0; i < listButtons.size();i++){
+            ButtonGame button = listButtons.get(i);
+            button.id = (Integer) shuffledList.get(i);
+            button.setIcon(images.getIcon(IconType.UNKNOWN));
+            listButtons.set(i, button);
+        }
+        panelGrid.repaint();
+    }
+
+    public void shuffle() {
+        numberOfClicks = 0;
+        pairsFound = 0;
+        shuffledList = new ArrayList<>();
+
+        for (int i = 1; i <= (gameConstants.NUMBER_OF_PAIRS); i++) {
+            shuffledList.add(i);
+            shuffledList.add(i);
+        }
+        Collections.shuffle(shuffledList);
+    }
+
+    public void solve(Boolean showNumOfClicks) {
+        if(numberOfClicks == -1) return;
+        labelTitle.setText("Number of Clicks: " +
+                (showNumOfClicks? numberOfClicks.toString():"Auto Resolution"));
+
+        numberOfClicks = -1;
+        pairsFound = 12;
+        buttonLastClicked = null;
+
+        for(int i = 0; i < listButtons.size();i++){
+            ButtonGame button = listButtons.get(i);
+            button.setIcon(images.createIcon((Integer) shuffledList.get(i)));
+            button.id = 0;
+            listButtons.set(i, button);
+        }
+        panelGrid.repaint();
+    }
 }
