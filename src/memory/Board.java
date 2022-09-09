@@ -70,7 +70,6 @@ public class Board {
 
         cardList = new ArrayList<>();
         int x = 0;
-        System.out.println(shuffledList);
         for(int i = 0; i < gameConstants.NUMBER_OF_COLUMNS; i++){
             for(int j = 0; j < gameConstants.NUMBER_OF_ROWS; j++){
                 Integer randomNum = (Integer) shuffledList.get(x);
