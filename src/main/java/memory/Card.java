@@ -1,9 +1,6 @@
 package memory;
 
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Objects;
+import javax.swing.JButton;
 
 public class Card extends JButton {
     Integer id;

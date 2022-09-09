@@ -23,12 +23,8 @@
  */
 package memory;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-import java.util.Date;
-
 public class Memory {
-    static Game game;
+    private Game game;
     public Memory(Game game) {
         this.game = game;
     }

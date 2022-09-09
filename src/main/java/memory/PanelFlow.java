@@ -3,8 +3,6 @@ package memory;
 import javax.swing.*;
 import java.awt.*;
 
-import static memory.FlowType.*;
-
 public class PanelFlow implements UIElement{
 
     @Override
