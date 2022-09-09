@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Label implements UIElement{
-
     @Override
     public String getType() {
         return "label";
@@ -14,4 +13,5 @@ public class Label implements UIElement{
     public Component getElement(String content) {
         return new JLabel(content);
     }
+
 }
