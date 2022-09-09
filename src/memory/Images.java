@@ -32,35 +32,12 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import javax.swing.ImageIcon;
 
+import static memory.IconType.SUCCESS;
+
 public class Images {
-<<<<<<< HEAD
-<<<<<<< HEAD
-    private class Item{
-        Integer intCod;
-        String strNomeRecurso;
-        Item(Integer intCod, String strNomeRecurso){
-            this.intCod = intCod;
-            this.strNomeRecurso = strNomeRecurso;
-        }
-    }
-    private final Map<Integer,Item> mapa;
-    public Images(){
-        mapa = new HashMap<>();
-        preenche();
-    }
-
-    public String getResourceName(Integer intCod){
-        return mapa.get(intCod).strNomeRecurso;
-    }
-    public ImageIcon IconFactory(Integer intCod){
-      if(!mapa.containsKey(intCod)) {
-=======
-=======
-
+    private final Map<Integer,Item> imagesMap;
     String localDir = System.getProperty("user.dir");
     private GameConstants gameConstants;
->>>>>>> b0f7769 (refactoring images class and including constants)
-    private final Map<Integer,Item> imagesMap;
     public Images(){
         imagesMap = new HashMap<>();
         getImages();
@@ -68,13 +45,6 @@ public class Images {
     public String getItemName(Integer id){
         return "images/" + imagesMap.get(id).name;
     }
-<<<<<<< HEAD
-    public ImageIcon IconFactory(Integer id){
-      if(!imagesMap.containsKey(id)) {
->>>>>>> e5af5bd (using dependency injection and UIElement Factory to decouple game)
-          System.out.println("IconFactory problem");
-=======
-
     public ImageIcon createIcon(Integer id){
       if(imagesMap.containsKey(id)) {
           return new ImageIcon(
@@ -84,109 +54,10 @@ public class Images {
 
       } else {
           System.out.println("Icon could not be created");
->>>>>>> b0f7769 (refactoring images class and including constants)
           return null;
       }
     }
-<<<<<<< HEAD
-    private void preenche(){
-=======
-    private void getImages(){
-<<<<<<< HEAD
->>>>>>> e5af5bd (using dependency injection and UIElement Factory to decouple game)
-        Item item;
-        int i = -1;
-
-        // undiscovered image
-        item = new Item(i++,"images/ic_help_outline_black_18dp.png");
-<<<<<<< HEAD
-        mapa.put(item.intCod, item);        
-
-        // discovered image
-        item = new Item(i++,"images/ic_done_black_18dp.png");
-        mapa.put(item.intCod, item);        
-
-
-        item = new Item(i++,"images/ic_airport_shuttle_black_18dp.png");
-        mapa.put(item.intCod, item);        
-
-        item = new Item(i++,"images/ic_all_inclusive_black_18dp.png");
-        mapa.put(item.intCod, item);        
-
-        item = new Item(i++,"images/ic_beach_access_black_18dp.png");
-        mapa.put(item.intCod, item);        
-
-        item = new Item(i++,"images/ic_business_center_black_18dp.png");
-        mapa.put(item.intCod, item);        
-
-        item = new Item(i++,"images/ic_casino_black_18dp.png");
-        mapa.put(item.intCod, item);        
-
-        item = new Item(i++,"images/ic_child_care_black_18dp.png");
-        mapa.put(item.intCod, item);        
-
-        item = new Item(i++,"images/ic_child_friendly_black_18dp.png");
-        mapa.put(item.intCod, item);        
-
-        item = new Item(i++,"images/ic_fitness_center_black_18dp.png");
-        mapa.put(item.intCod, item);        
-
-        item = new Item(i++,"images/ic_free_breakfast_black_18dp.png");
-        mapa.put(item.intCod, item);        
-
-        item = new Item(i++,"images/ic_hot_tub_black_18dp.png");
-        mapa.put(item.intCod, item);        
-
-        item = new Item(i++,"images/ic_kitchen_black_18dp.png");
-        mapa.put(item.intCod, item);        
-
-        item = new Item(i++,"images/ic_pool_black_18dp.png");
-        mapa.put(item.intCod, item);        
-=======
-        imagesMap.put(item.id, item);
-
-        // discovered image
-        item = new Item(i++,"images/ic_done_black_18dp.png");
-        imagesMap.put(item.id, item);
-
-
-        item = new Item(i++,"images/ic_airport_shuttle_black_18dp.png");
-        imagesMap.put(item.id, item);
-
-        item = new Item(i++,"images/ic_all_inclusive_black_18dp.png");
-        imagesMap.put(item.id, item);
-
-        item = new Item(i++,"images/ic_beach_access_black_18dp.png");
-        imagesMap.put(item.id, item);
-
-        item = new Item(i++,"images/ic_business_center_black_18dp.png");
-        imagesMap.put(item.id, item);
-
-        item = new Item(i++,"images/ic_casino_black_18dp.png");
-        imagesMap.put(item.id, item);
-
-        item = new Item(i++,"images/ic_child_care_black_18dp.png");
-        imagesMap.put(item.id, item);
-
-        item = new Item(i++,"images/ic_child_friendly_black_18dp.png");
-        imagesMap.put(item.id, item);
-
-        item = new Item(i++,"images/ic_fitness_center_black_18dp.png");
-        imagesMap.put(item.id, item);
-
-        item = new Item(i++,"images/ic_free_breakfast_black_18dp.png");
-        imagesMap.put(item.id, item);
-
-        item = new Item(i++,"images/ic_hot_tub_black_18dp.png");
-        imagesMap.put(item.id, item);
-
-        item = new Item(i++,"images/ic_kitchen_black_18dp.png");
-        imagesMap.put(item.id, item);
-
-        item = new Item(i++,"images/ic_pool_black_18dp.png");
-        imagesMap.put(item.id, item);
->>>>>>> e5af5bd (using dependency injection and UIElement Factory to decouple game)
-=======
+    private void getImages() {
         File f = new File(localDir + "/src/images");
         String[] imageList = f.list();
         for(Integer i=0; i<imageList.length-1; i++){
@@ -194,7 +65,7 @@ public class Images {
             imagesMap.put(i, item);
         }
     }
-    public ImageIcon getIcon(IconType iconType){
+    public ImageIcon getIcon(IconType iconType) {
         switch (iconType){
             case SUCCESS:
                 File s = new File(localDir + gameConstants.URL_SUCCESS_ICON);
@@ -217,6 +88,5 @@ public class Images {
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
         return key.get(0);
->>>>>>> b0f7769 (refactoring images class and including constants)
     }
 }

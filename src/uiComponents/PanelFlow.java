@@ -1,9 +1,9 @@
-package memory;
+package uiComponents;
 
-import javax.swing.*;
-import java.awt.*;
 
-import static memory.FlowType.*;
+import javax.swing.JPanel;
+import java.awt.FlowLayout;
+import java.awt.Component;
 
 public class PanelFlow implements UIElement{
 

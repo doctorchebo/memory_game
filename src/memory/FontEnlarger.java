@@ -1,6 +1,7 @@
 package memory;
 
-import java.awt.*;
+
+import java.awt.Component;
 
 public class FontEnlarger {
     public void enlargeFont(Component c, float factor) {

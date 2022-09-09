@@ -1,7 +1,8 @@
-package memory;
+package uiComponents;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JPanel;
+import java.awt.GridBagLayout;
+import java.awt.Component;
 
 public class PanelGrid implements UIElement{
     @Override

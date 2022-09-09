@@ -1,6 +1,6 @@
-package memory;
+package uiComponents;
 
-import java.awt.*;
+import java.awt.Component;
 
 public interface UIElement {
     String getType();

@@ -1,6 +1,6 @@
-package memory;
+package uiComponents;
 
-import java.awt.*;
+import java.awt.GridBagConstraints;
 
 public class UIHelpers {
     public GridBagConstraints generateConstraints(int i, int j) {

@@ -1,18 +1,17 @@
-package memory;
+package uiComponents;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class Button implements UIElement{
+public class Label implements UIElement{
 
     @Override
     public String getType() {
-        return "button";
+        return "label";
     }
 
     @Override
     public Component getElement(String content) {
-        return new JButton(content);
+        return new JLabel(content);
     }
-
 }

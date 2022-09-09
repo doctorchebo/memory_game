@@ -1,7 +1,7 @@
-package memory;
+package uiComponents;
 
 public class UIFactory  {
-    UIElement getUIElement(UIType type){
+    public UIElement getUIElement(UIType type){
         switch (type){
             case BUTTON:
                 return new Button();
@@ -12,10 +12,10 @@ public class UIFactory  {
             default: return null;
         }
     }
-    UIElement getPanelFlowElement(){
+    public UIElement getPanelFlowElement(){
         return new PanelFlow();
     }
-    UIElement getPanelGridElement(){
+    public UIElement getPanelGridElement(){
         return new PanelGrid();
     }
 }

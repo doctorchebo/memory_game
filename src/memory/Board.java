@@ -1,5 +1,9 @@
 package memory;
 
+import uiComponents.UIFactory;
+import uiComponents.UIHelpers;
+import uiComponents.UIType;
+
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import java.awt.*;
@@ -10,11 +14,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-public class Board implements GameService{
-    GameConstants gameConstants;
+public class Board {
 
     JFrame frame;
-    JPanel panelTitle, panelGrid, panelControl;
+    JPanel panelTitle;
+    JPanel panelGrid;
+    JPanel panelControl;
     JButton new_game, solve, about;
     ButtonGame buttonLastClicked;
     Images images;
@@ -23,6 +28,8 @@ public class Board implements GameService{
     List<ButtonGame> listButtons;
     UIHelpers uiHelpers;
     JLabel labelTitle;
+
+    Integer count = 0;
     Integer numberOfClicks;
     Integer pairsFound;
     ArrayList shuffledList;
@@ -52,7 +59,7 @@ public class Board implements GameService{
                 // if there was a repeated click on the same button it is not worth...
                 if(buttonItem.equals(buttonLastClicked)) return;
 
-                labelTitle.setText("Number of Clicks: " + ++numberOfClicks);
+                labelTitle.setText(GameConstants.COUNT_LABEL + ++numberOfClicks);
 
                 buttonItem.setIcon(images.createIcon(buttonItem.id));
 
@@ -71,7 +78,7 @@ public class Board implements GameService{
 
                     buttonLastClicked = null;
                     pairsFound++;
-                    if(pairsFound >= gameConstants.NUMBER_OF_PAIRS){
+                    if(pairsFound >= GameConstants.NUMBER_OF_PAIRS){
                         solve(true);
                     }
 
@@ -83,7 +90,7 @@ public class Board implements GameService{
         });
     }
 
-    public void addActionListeners(){
+    public void addActionListeners() {
         new_game.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -101,29 +108,29 @@ public class Board implements GameService{
         about.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame,"Just For Fun");
+                JOptionPane.showMessageDialog(frame,GameConstants.ABOUT_LABEL);
             }
         });
     }
 
-    private void createLayout(){
-        frame = (JFrame) uiFactory.getUIElement(UIType.FRAME).getElement("Memory");
+    private void createLayout() {
+        frame = (JFrame) uiFactory.getUIElement(UIType.FRAME).getElement(GameConstants.FRAME_NAME);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
 
-        labelTitle = (JLabel) uiFactory.getUIElement(UIType.LABEL).getElement("Number of Clicks: 0");
+        labelTitle = (JLabel) uiFactory.getUIElement(UIType.LABEL).getElement(GameConstants.COUNT_LABEL + count);
         fontEnlarger.enlargeFont(labelTitle, 2);
 
         panelControl = (JPanel) uiFactory.getPanelFlowElement().getElement("CENTER");
         panelControl.setBorder(new BevelBorder(BevelBorder.RAISED));
 
-        new_game = (JButton) uiFactory.getUIElement(UIType.BUTTON).getElement("New Game");
+        new_game = (JButton) uiFactory.getUIElement(UIType.BUTTON).getElement(GameConstants.NEW_GAME_BTN);
         fontEnlarger.enlargeFont(new_game, 2);
 
-        solve = (JButton) uiFactory.getUIElement(UIType.BUTTON).getElement("Solve");
+        solve = (JButton) uiFactory.getUIElement(UIType.BUTTON).getElement(GameConstants.SOLVE_BTN);
         fontEnlarger.enlargeFont(solve, 2);
 
-        about = (JButton) uiFactory.getUIElement(UIType.BUTTON).getElement("About");
+        about = (JButton) uiFactory.getUIElement(UIType.BUTTON).getElement(GameConstants.ABOUT_BTN);
         fontEnlarger.enlargeFont(about, 2);
         frame.add(panelControl,BorderLayout.SOUTH);
 
@@ -144,8 +151,8 @@ public class Board implements GameService{
         buttonLastClicked = null;
         int x = 0;
         System.out.println(shuffledList);
-        for(int i = 0; i < gameConstants.NUMBER_OF_COLUMNS; i++){
-            for(int j = 0; j < gameConstants.NUMBER_OF_ROWS; j++){
+        for(int i = 0; i < GameConstants.NUMBER_OF_COLUMNS; i++){
+            for(int j = 0; j < GameConstants.NUMBER_OF_ROWS; j++){
                 Integer randomNum = (Integer) shuffledList.get(x);
                 x++;
                 ButtonGame buttonItem = new ButtonGame(randomNum);
@@ -164,9 +171,10 @@ public class Board implements GameService{
         frame.setVisible(true);
     }
 
-    public void newGame(){
+    public void newGame() {
         shuffle();
-        labelTitle.setText("Number of Clicks: 0");
+        count = 0;
+        labelTitle.setText(GameConstants.COUNT_LABEL + count);
         buttonLastClicked = null;
 
         for(int i = 0; i < listButtons.size();i++){
@@ -183,7 +191,7 @@ public class Board implements GameService{
         pairsFound = 0;
         shuffledList = new ArrayList<>();
 
-        for (int i = 1; i <= (gameConstants.NUMBER_OF_PAIRS); i++) {
+        for (int i = 1; i <= (GameConstants.NUMBER_OF_PAIRS); i++) {
             shuffledList.add(i);
             shuffledList.add(i);
         }
@@ -192,8 +200,8 @@ public class Board implements GameService{
 
     public void solve(Boolean showNumOfClicks) {
         if(numberOfClicks == -1) return;
-        labelTitle.setText("Number of Clicks: " +
-                (showNumOfClicks? numberOfClicks.toString():"Auto Resolution"));
+        labelTitle.setText(GameConstants.COUNT_LABEL +
+                (showNumOfClicks? numberOfClicks.toString(): GameConstants.SOLVE_MESSAGE));
 
         numberOfClicks = -1;
         pairsFound = 12;

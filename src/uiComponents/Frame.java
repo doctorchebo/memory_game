@@ -1,4 +1,4 @@
-package memory;
+package uiComponents;
 
 import javax.swing.*;
 import java.awt.*;
