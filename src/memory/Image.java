@@ -28,17 +28,14 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import javax.swing.ImageIcon;
 
-import static memory.IconType.SUCCESS;
-
-public class Images {
-    private final Map<Integer,Item> imagesMap;
+public class Image {
     String localDir = System.getProperty("user.dir");
     private GameConstants gameConstants;
-    public Images(){
+    private final Map<Integer,Item> imagesMap;
+    public Image(){
         imagesMap = new HashMap<>();
         getImages();
     }
@@ -57,7 +54,7 @@ public class Images {
           return null;
       }
     }
-    private void getImages() {
+    private void getImages(){
         File f = new File(localDir + "/src/images");
         String[] imageList = f.list();
         for(Integer i=0; i<imageList.length-1; i++){
@@ -65,7 +62,7 @@ public class Images {
             imagesMap.put(i, item);
         }
     }
-    public ImageIcon getIcon(IconType iconType) {
+    public ImageIcon getIcon(IconType iconType){
         switch (iconType){
             case SUCCESS:
                 File s = new File(localDir + gameConstants.URL_SUCCESS_ICON);

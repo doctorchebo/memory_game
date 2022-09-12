@@ -23,22 +23,24 @@
  */
 package memory;
 
+
 import uiComponents.UIFactory;
 import uiComponents.UIHelpers;
 
+
 public class Memory {
-    public Memory(Board board) {
+    public Memory(Game game) {
     }
     public static void main(String[] args) {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
                 Memory mem = new Memory(
-                        new Board(
-                        new UIFactory(),
-                        new FontEnlarger(),
-                        new Images(),
-                        new UIHelpers()));
+                        new Game(new Board(new UIFactory(),
+                                new FontEnlarger(),
+                                new Image(),
+                                new UIHelpers())));
+
             }
         });
     }

@@ -16,20 +16,18 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 public class Board {
-
     JFrame frame;
     JPanel panelTitle;
     JPanel panelGrid;
     JPanel panelControl;
     JButton new_game, solve, about;
-    ButtonGame buttonLastClicked;
-    Images images;
+    Card card;
+    Image image;
     UIFactory uiFactory;
     FontEnlarger fontEnlarger;
-    List<ButtonGame> listButtons;
+    List<Card> cardList;
     UIHelpers uiHelpers;
     JLabel labelTitle;
 
@@ -41,83 +39,15 @@ public class Board {
 
     public Board(UIFactory uiFactory,
                  FontEnlarger fontEnlarger,
-                 Images images,
+                 Image image,
                  UIHelpers uiHelpers){
-        this.images = images;
+        this.image = image;
         this.uiFactory = uiFactory;
         this.fontEnlarger = fontEnlarger;
         this.uiHelpers = uiHelpers;
-        shuffle();
-        createLayout();
-        addActionListeners();
     }
 
-    public void addButtonActionListeners(ButtonGame buttonItem) {
-        buttonItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(buttonItem.id == 0){
-                    return;
-                }
-                // rule
-                // if there was a repeated click on the same button it is not worth...
-                if(buttonItem.equals(buttonLastClicked)) return;
-
-                labelTitle.setText(GameConstants.COUNT_LABEL + ++numberOfClicks);
-
-                buttonItem.setIcon(images.createIcon(buttonItem.id));
-
-                if(buttonLastClicked == null){
-                    buttonLastClicked = buttonItem;
-                    return;
-                }
-
-                if(Objects.equals(buttonItem.id, buttonLastClicked.id)){
-
-                    buttonItem.setIcon(images.getIcon(IconType.SUCCESS));
-                    buttonItem.id = 0;
-
-                    buttonLastClicked.setIcon(images.getIcon(IconType.SUCCESS));
-                    buttonLastClicked.id = 0;
-
-                    buttonLastClicked = null;
-                    pairsFound++;
-                    if(pairsFound >= GameConstants.NUMBER_OF_PAIRS){
-                        solve(true);
-                    }
-
-                }else{
-                    buttonLastClicked.setIcon(images.getIcon(IconType.UNKNOWN));
-                    buttonLastClicked = buttonItem;
-                }
-            }
-        });
-    }
-
-    public void addActionListeners() {
-        new_game.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                newGame();
-            }
-        });
-
-        solve.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                solve(false);
-            }
-        });
-
-        about.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame,GameConstants.ABOUT_LABEL);
-            }
-        });
-    }
-
-    private void createLayout() {
+    public void createLayout() {
         frame = (JFrame) uiFactory.getUIElement(UIType.FRAME).getElement(GameConstants.FRAME_NAME);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
@@ -151,22 +81,20 @@ public class Board {
         panelGrid = (JPanel) uiFactory.getPanelGridElement().getElement("GRID");
         panelGrid.setBorder(new BevelBorder(BevelBorder.RAISED));
 
-        listButtons = new ArrayList<>();
-        buttonLastClicked = null;
+        cardList = new ArrayList<>();
         int x = 0;
         System.out.println(shuffledList);
         for(int i = 0; i < GameConstants.NUMBER_OF_COLUMNS; i++){
             for(int j = 0; j < GameConstants.NUMBER_OF_ROWS; j++){
                 Integer randomNum = (Integer) shuffledList.get(x);
                 x++;
-                ButtonGame buttonItem = new ButtonGame(randomNum);
-                buttonItem.setIcon(images.getIcon(IconType.UNKNOWN));
+                card = new Card(randomNum);
+                card.setIcon(image.getIcon(IconType.UNKNOWN));
 
-                panelGrid.add(buttonItem, uiHelpers.generateConstraints(i , j));
+                panelGrid.add(card, uiHelpers.generateConstraints(i , j));
 
                 // list of buttons used in the Game
-                listButtons.add(buttonItem);
-                addButtonActionListeners(buttonItem);
+                cardList.add(card);
             }
         }
         frame.add(panelGrid,BorderLayout.CENTER);
@@ -175,20 +103,6 @@ public class Board {
         frame.setVisible(true);
     }
 
-    public void newGame() {
-        shuffle();
-        count = 0;
-        labelTitle.setText(GameConstants.COUNT_LABEL + count);
-        buttonLastClicked = null;
-
-        for(int i = 0; i < listButtons.size();i++){
-            ButtonGame button = listButtons.get(i);
-            button.id = (Integer) shuffledList.get(i);
-            button.setIcon(images.getIcon(IconType.UNKNOWN));
-            listButtons.set(i, button);
-        }
-        panelGrid.repaint();
-    }
 
     public void shuffle() {
         numberOfClicks = 0;
@@ -200,23 +114,5 @@ public class Board {
             shuffledList.add(i);
         }
         Collections.shuffle(shuffledList);
-    }
-
-    public void solve(Boolean showNumOfClicks) {
-        if(numberOfClicks == -1) return;
-        labelTitle.setText(GameConstants.COUNT_LABEL +
-                (showNumOfClicks? numberOfClicks.toString(): GameConstants.SOLVE_MESSAGE));
-
-        numberOfClicks = -1;
-        pairsFound = 12;
-        buttonLastClicked = null;
-
-        for(int i = 0; i < listButtons.size();i++){
-            ButtonGame button = listButtons.get(i);
-            button.setIcon(images.createIcon((Integer) shuffledList.get(i)));
-            button.id = 0;
-            listButtons.set(i, button);
-        }
-        panelGrid.repaint();
     }
 }
