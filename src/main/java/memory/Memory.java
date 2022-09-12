@@ -23,19 +23,12 @@
  */
 package memory;
 
-<<<<<<< HEAD:src/memory/Memory.java
 
 import uiComponents.UIFactory;
 import uiComponents.UIHelpers;
 
-=======
-import org.json.JSONArray;
-import org.json.JSONObject;
-import java.util.Date;
->>>>>>> fc6bdc5 (persisting data in json file):src/main/java/memory/Memory.java
-
 public class Memory {
-    static Game game;
+    private Game game;
     public Memory(Game game) {
         this.game = game;
     }

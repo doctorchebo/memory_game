@@ -2,19 +2,15 @@ package memory;
 
 
 import org.json.JSONObject;
-
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
-
 import javax.swing.*;
-import javax.xml.crypto.Data;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -82,7 +78,6 @@ public class Game implements DataSaver {
             @Override
             public void actionPerformed(ActionEvent e) {
                 solve(false);
-                save();
             }
         });
 

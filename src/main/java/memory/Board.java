@@ -8,11 +8,8 @@ import javax.swing.JPanel;
 import javax.swing.JFrame;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.border.BevelBorder;
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -30,12 +27,9 @@ public class Board {
     List<Card> cardList;
     UIHelpers uiHelpers;
     JLabel labelTitle;
-<<<<<<< HEAD:src/memory/Board.java
-
     Integer count = 0;
     Integer numberOfClicks;
-=======
->>>>>>> fc6bdc5 (persisting data in json file):src/main/java/memory/Board.java
+
     Integer pairsFound;
     ArrayList shuffledList;
 
