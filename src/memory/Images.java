@@ -24,88 +24,69 @@
 
 package memory;
 
+import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import javax.swing.ImageIcon;
 
-
+import static memory.IconType.SUCCESS;
 
 public class Images {
-    private class Item{
-        Integer intCod;
-        String strNomeRecurso;
-        Item(Integer intCod, String strNomeRecurso){
-            this.intCod = intCod;
-            this.strNomeRecurso = strNomeRecurso;
-        }
-    }
-    private final Map<Integer,Item> mapa;
+    private final Map<Integer,Item> imagesMap;
+    String localDir = System.getProperty("user.dir");
+    private GameConstants gameConstants;
     public Images(){
-        mapa = new HashMap<>();
-        preenche();
+        imagesMap = new HashMap<>();
+        getImages();
     }
+    public String getItemName(Integer id){
+        return "images/" + imagesMap.get(id).name;
+    }
+    public ImageIcon createIcon(Integer id){
+      if(imagesMap.containsKey(id)) {
+          return new ImageIcon(
+                  getClass()
+                          .getClassLoader()
+                          .getResource(getItemName(id)));
 
-    public String getResourceName(Integer intCod){
-        return mapa.get(intCod).strNomeRecurso;
-    }
-    public ImageIcon IconFactory(Integer intCod){
-      if(!mapa.containsKey(intCod)) {
-          System.out.println("IconFactory problem");
+      } else {
+          System.out.println("Icon could not be created");
           return null;
       }
-      return new ImageIcon(
-              getClass()
-                      .getClassLoader()
-                      .getResource(getResourceName(intCod)));
     }
-    private void preenche(){
-        Item item;
-        int i = -1;
-
-        // undiscovered image
-        item = new Item(i++,"images/ic_help_outline_black_18dp.png");
-        mapa.put(item.intCod, item);        
-
-        // discovered image
-        item = new Item(i++,"images/ic_done_black_18dp.png");
-        mapa.put(item.intCod, item);        
-
-
-        item = new Item(i++,"images/ic_airport_shuttle_black_18dp.png");
-        mapa.put(item.intCod, item);        
-
-        item = new Item(i++,"images/ic_all_inclusive_black_18dp.png");
-        mapa.put(item.intCod, item);        
-
-        item = new Item(i++,"images/ic_beach_access_black_18dp.png");
-        mapa.put(item.intCod, item);        
-
-        item = new Item(i++,"images/ic_business_center_black_18dp.png");
-        mapa.put(item.intCod, item);        
-
-        item = new Item(i++,"images/ic_casino_black_18dp.png");
-        mapa.put(item.intCod, item);        
-
-        item = new Item(i++,"images/ic_child_care_black_18dp.png");
-        mapa.put(item.intCod, item);        
-
-        item = new Item(i++,"images/ic_child_friendly_black_18dp.png");
-        mapa.put(item.intCod, item);        
-
-        item = new Item(i++,"images/ic_fitness_center_black_18dp.png");
-        mapa.put(item.intCod, item);        
-
-        item = new Item(i++,"images/ic_free_breakfast_black_18dp.png");
-        mapa.put(item.intCod, item);        
-
-        item = new Item(i++,"images/ic_hot_tub_black_18dp.png");
-        mapa.put(item.intCod, item);        
-
-        item = new Item(i++,"images/ic_kitchen_black_18dp.png");
-        mapa.put(item.intCod, item);        
-
-        item = new Item(i++,"images/ic_pool_black_18dp.png");
-        mapa.put(item.intCod, item);        
+    private void getImages() {
+        File f = new File(localDir + "/src/images");
+        String[] imageList = f.list();
+        for(Integer i=0; i<imageList.length-1; i++){
+            Item item = new Item(i, imageList[i]);
+            imagesMap.put(i, item);
+        }
     }
-    
+    public ImageIcon getIcon(IconType iconType) {
+        switch (iconType){
+            case SUCCESS:
+                File s = new File(localDir + gameConstants.URL_SUCCESS_ICON);
+                String[] successIcon = s.list();
+                return new ImageIcon(getClass()
+                        .getClassLoader()
+                        .getResource("images/done/" + successIcon[0]));
+            case UNKNOWN:
+                File u = new File(localDir + gameConstants.URL_UNKNOWN_ICON);
+                String[] unknownIcon = u.list();
+                return new ImageIcon(getClass()
+                        .getClassLoader()
+                        .getResource("images/unknown/" + unknownIcon[0]));
+            default: return null;
+        }
+    }
+    public Integer getImageIdByValue(String value){
+        List<Integer> key = imagesMap.entrySet().stream()
+                .filter(item -> item.getValue().name.contains(value))
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
+        return key.get(0);
+    }
 }
